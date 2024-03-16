@@ -9,6 +9,10 @@ document.getElementById('toggleButton').addEventListener('click', function() {
   }
 });
 
+document.getElementById('toggleButton').addEventListener('click', function() {
+  browser.runtime.sendMessage({command: 'togglePlay'});
+});
+
 document.getElementById('volumeSlider').addEventListener('input', function() {
-  audio.volume = this.value;
+  browser.runtime.sendMessage({command: 'changeVolume', volume: this.value});
 });
