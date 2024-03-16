@@ -8,3 +8,7 @@ document.getElementById('toggleButton').addEventListener('click', function() {
     audio.currentTime = 0;
   }
 });
+
+document.getElementById('volumeSlider').addEventListener('input', function() {
+  audio.volume = this.value;
+});
