@@ -16,4 +16,4 @@ Ask me again when I get paid for this shit.
 
 
 ## Bugs 
-* Scrolling the volumer slider bugs out and plays volume very loud at certain occasions.
+* Scrolling the volumer slider bugs out and plays volume very loud.
