@@ -11,10 +11,15 @@
         .special {
             color: #df4b39;
         }
+        #toggleButton {
+            background-color: #49667f;
+            color: #d1c6b3; /* You might want to change the text color so it's visible on the dark background */
+            border: none; /* Removes the default button border */
+        }
     </style>
 </head>
 <body>
-    <h1>r<span class="special">A</span>dio Stream Player</h1>
+    <h1>R<span class="special">a</span>dio Stream Player</h1>
     <button id="toggleButton">Play/Stop</button>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
     <label id="volumeLabel">100%</label>
