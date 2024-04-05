@@ -1,5 +1,8 @@
 # Project Name: r/A/dio Stream Player
 
+## Out Now!
+https://addons.mozilla.org/en-US/firefox/addon/r-a-dio-stream-player/
+
 ## What does this project do?
 A Firefox extension that provides a simple interface to play and stop a radio stream directly from your browser.
 
