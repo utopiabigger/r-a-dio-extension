@@ -7,7 +7,7 @@ https://addons.mozilla.org/en-US/firefox/addon/r-a-dio-stream-player/
 A Firefox extension that provides a simple interface to play and stop a radio stream directly from your browser.
 
 ## What version is this?
-1.0
+1.1
 
 ## Testing
 * Unzip the file on your desktop
@@ -18,5 +18,5 @@ A Firefox extension that provides a simple interface to play and stop a radio st
 * Open the extension’s directory and select any file inside the extension.
 
 
-## Bugs 
-* Scrolling the volumer slider bugs out and plays volume very loud.
+## Bugs
+None :D
