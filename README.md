@@ -18,5 +18,5 @@ A Firefox extension that provides a simple interface to play and stop a radio st
 * Open the extension’s directory and select any file inside the extension.
 
 
-## Bugs 
-* Scrolling the volumer slider bugs out and plays volume very loud.
+## Bugs
+None :D
