@@ -10,7 +10,7 @@ function getAudio() {
 // Initialize the audio when the background script starts
 getAudio();
 
-browser.runtime.onMessage.addListener((message) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const audio = getAudio();
     if (message.command === 'togglePlay') {
         if (audio.paused) {
@@ -18,6 +18,7 @@ browser.runtime.onMessage.addListener((message) => {
         } else {
             audio.pause();
         }
+        sendResponse({ isPlaying: !audio.paused });
     } else if (message.command === 'changeVolume') {
         audio.volume = message.volume;
     }

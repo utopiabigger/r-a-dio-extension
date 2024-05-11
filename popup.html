@@ -23,10 +23,12 @@
 </head>
 <body>
     <h1>R<span class="special">a</span>dio Stream Player</h1>
-    <button id="toggleButton">Play/Stop</button>
+    <button id="toggleButton">
+        <span id="playText">Play</span>
+        <span id="stopText" style="display: none;">Stop</span>
+    </button>
     <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50">
     <label id="volumeLabel">100%</label>
-
     <script src="popup.js"></script>
 </body>
 </html>
