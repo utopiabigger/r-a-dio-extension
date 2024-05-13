@@ -10,7 +10,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 document.getElementById('toggleButton').addEventListener('click', function() {
-  browser.runtime.sendMessage({ command: 'togglePlay' });
+  browser.runtime.sendMessage({ command: 'togglePlay' }, function(response) {
+    const playText = document.getElementById('playText');
+    const stopText = document.getElementById('stopText');
+    
+    if (response.isPlaying) {
+      playText.style.display = 'none';
+      stopText.style.display = 'inline';
+    } else {
+      playText.style.display = 'inline';
+      stopText.style.display = 'none';
+    }
+  });
 });
 
 document.getElementById('volumeSlider').addEventListener('input', function() {
