@@ -26,5 +26,11 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         audio.volume = message.volume;
     } else if (message.command === 'getPlaybackState') {
         sendResponse({ isPlaying: !audio.paused });
+    } else if (message.command === 'refreshStream') {
+        audio.src = 'https://relay0.r-a-d.io/main.mp3';
+        audio.load();
+        if (isPlaying) {
+            audio.play();
+        }
     }
 });

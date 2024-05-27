@@ -1,7 +1,9 @@
+// Variables
 let isPlaying = false; // Variable to store the playback state
 
-// When the popup is loaded, set the volume slider to the last saved value
+// Event Listeners
 document.addEventListener('DOMContentLoaded', (event) => {
+  // When the popup is loaded, set the volume slider to the last saved value
   const savedVolume = localStorage.getItem('volume');
   if (savedVolume) {
     const volumeValue = parseInt(savedVolume);
@@ -32,6 +34,11 @@ document.getElementById('volumeSlider').addEventListener('input', function() {
   browser.runtime.sendMessage({ command: 'changeVolume', volume: volumeValue / 100 });
 });
 
+document.getElementById('refreshIcon').addEventListener('click', function() {
+  browser.runtime.sendMessage({ command: 'refreshStream' });
+});
+
+// Functions
 function updateButtonText() {
   const playText = document.getElementById('playText');
   const stopText = document.getElementById('stopText');
