@@ -11,6 +11,11 @@
         .special {
             color: #df4b39;
         }
+        #logo {
+            height: 50px; /* Adjust the height as needed */
+            vertical-align: middle;
+            margin-left: 70px;
+        }
         #toggleButton {
         background-color: #49667f;
         color: #d1c6b3;
@@ -28,16 +33,27 @@
         #volumeLabel {
             color: #d1c6b3;
         }
+        #refreshIcon {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 6px;
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 <body>
-    <h1>R<span class="special">a</span>dio Stream Player</h1>
+    <h1>
+        <img id="logo" src="radio.png" alt="Radio Stream Player">
+    </h1>
     <button id="toggleButton">
         <span id="playText">Play</span>
         <span id="stopText" style="display: none;">Stop</span>
     </button>
     <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50">
     <label id="volumeLabel">100%</label>
+    <img id="refreshIcon" src="refresh.png" alt="Refresh" title="Refresh Stream">
     <script src="popup.js"></script>
 </body>
 </html>
