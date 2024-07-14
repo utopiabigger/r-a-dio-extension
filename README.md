@@ -21,3 +21,4 @@ A Firefox extension that provides a simple interface to play and stop a radio st
 ## Changelog
 - Does not change size when moving volume slider.
 - Auto-refreshes stream after 30 minutes of inactivity.
+- Icon size change.
