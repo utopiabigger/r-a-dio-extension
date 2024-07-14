@@ -4,42 +4,65 @@
     <style>
         body {
             background-color: #222222;
+            width: 330px;
+            height: 120px;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
         }
         h1 {
             color: #585858;
+            margin: 0 0 10px 0;
+            text-align: center;
         }
         .special {
             color: #df4b39;
         }
         #logo {
-            height: 50px; /* Adjust the height as needed */
+            height: 50px;
             vertical-align: middle;
-            margin-left: 70px;
+        }
+        #controls {
+            position: relative;
+            width: 100%;
+            height: 40px;
         }
         #toggleButton {
-        background-color: #49667f;
-        color: #d1c6b3;
-        border: none; /* Removes the default button border */
-        width: 60px; /* Increase the width of the button */
-        height: 30px; /* Increase the height of the button */
-        font-size: 15px; /* Increase the font size of the button text */
-        padding: 10px; /* Add some padding to the button */
-        border-radius: 3px; /* Apply rounded corners to the button */
+            background-color: #49667f;
+            color: #d1c6b3;
+            border: none;
+            width: 60px;
+            height: 30px;
+            font-size: 15px;
+            padding: 5px;
+            border-radius: 3px;
+            position: absolute;
+            left: 0;
+            top: 5px;
         }
         #toggleButton:hover {
-        background-color: #384f62;
-        color: #c3c9cd;
+            background-color: #384f62;
+            color: #c3c9cd;
+        }
+        #volumeSlider {
+            position: absolute;
+            left: 80px;
+            top: 10px;
+            width: 140px;
         }
         #volumeLabel {
             color: #d1c6b3;
+            position: absolute;
+            right: 50px;
+            top: 10px;
         }
         #refreshIcon {
             width: 16px;
             height: 16px;
             cursor: pointer;
-            vertical-align: middle;
-            margin-left: 6px;
-            margin-bottom: 4px;
+            position: absolute;
+            right: 24px;
+            top: 12px;
         }
     </style>
 </head>
@@ -47,13 +70,15 @@
     <h1>
         <img id="logo" src="radio.png" alt="Radio Stream Player">
     </h1>
-    <button id="toggleButton">
-        <span id="playText">Play</span>
-        <span id="stopText" style="display: none;">Stop</span>
-    </button>
-    <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50">
-    <label id="volumeLabel">100%</label>
-    <img id="refreshIcon" src="refresh.png" alt="Refresh" title="Refresh Stream">
+    <div id="controls">
+        <button id="toggleButton">
+            <span id="playText">Play</span>
+            <span id="stopText" style="display: none;">Stop</span>
+        </button>
+        <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50">
+        <label id="volumeLabel">100%</label>
+        <img id="refreshIcon" src="refresh.png" alt="Refresh" title="Refresh Stream">
+    </div>
     <script src="popup.js"></script>
 </body>
 </html>

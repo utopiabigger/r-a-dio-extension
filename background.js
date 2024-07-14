@@ -1,5 +1,6 @@
 let audio = null;
 let isPlaying = false; // Variable to store the playback state
+let lastPlayTime = 0;
 
 function getAudio() {
     if (!audio) {
@@ -14,13 +15,19 @@ getAudio();
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const audio = getAudio();
     if (message.command === 'togglePlay') {
+        const currentTime = Date.now();
         if (audio.paused) {
+            if (currentTime - lastPlayTime > 30 * 60 * 1000) {
+                audio.src = 'https://relay0.r-a-d.io/main.mp3';
+                audio.load();
+            }
             audio.play();
             isPlaying = true;
         } else {
             audio.pause();
             isPlaying = false;
         }
+        lastPlayTime = currentTime;
         sendResponse({ isPlaying: isPlaying });
     } else if (message.command === 'changeVolume') {
         audio.volume = message.volume;
@@ -32,5 +39,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (isPlaying) {
             audio.play();
         }
+        lastPlayTime = Date.now();
     }
 });
