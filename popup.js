@@ -23,7 +23,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .then(response => response.json())
     .then(data => {
       const trackInfo = document.getElementById('trackInfo');
-      trackInfo.textContent = `Now Playing: ${data.main.np} by DJ: ${data.main.djname}`;
+      const artistInfo = document.getElementById('artistInfo');
+      const [artist, title] = data.main.np.split(' - ');
+      trackInfo.textContent = title;
+      artistInfo.textContent = artist; // Display only the artist's name
     })
     .catch(error => {
       console.error('Error fetching the API:', error);
