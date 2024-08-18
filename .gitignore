@@ -1,2 +1,7 @@
-# ignore conversation.xml
-conversation.xml
+# Ignore xml
+*.xml
+
+# Other files and directories to ignore
+node_modules/
+dist/
+.env
