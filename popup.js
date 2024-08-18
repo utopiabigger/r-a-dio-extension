@@ -45,8 +45,9 @@ document.getElementById('volumeSlider').addEventListener('input', function() {
   browser.runtime.sendMessage({ command: 'changeVolume', volume: volumeValue / 100 });
 });
 
+// Remove the event listener for the refresh icon
 document.getElementById('refreshIcon').addEventListener('click', function() {
-  browser.runtime.sendMessage({ command: 'refreshStream' });
+  // Do nothing
 });
 
 // Functions
