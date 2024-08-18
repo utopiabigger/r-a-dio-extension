@@ -5,7 +5,6 @@
         body {
             background-color: #222222;
             width: 330px;
-            height: 120px;
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
@@ -64,6 +63,11 @@
             right: 24px;
             top: 12px;
         }
+        #trackInfo {
+            color: #d1c6b3;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -79,6 +83,7 @@
         <label id="volumeLabel">100%</label>
         <img id="refreshIcon" src="refresh.png" alt="Refresh" title="Refresh Stream">
     </div>
+    <div id="trackInfo">Loading...</div> <!-- New div for track info -->
     <script src="popup.js"></script>
 </body>
 </html>

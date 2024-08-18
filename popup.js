@@ -17,6 +17,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
     isPlaying = response.isPlaying;
     updateButtonText();
   });
+
+  // Fetch and display the current track information
+  fetch('https://r-a-d.io/api')
+    .then(response => response.json())
+    .then(data => {
+      const trackInfo = document.getElementById('trackInfo');
+      trackInfo.textContent = `Now Playing: ${data.main.np} by DJ: ${data.main.djname}`;
+    })
+    .catch(error => {
+      console.error('Error fetching the API:', error);
+    });
 });
 
 document.getElementById('toggleButton').addEventListener('click', function() {
