@@ -20,41 +20,41 @@
         #logo {
             height: 50px;
             vertical-align: middle;
-            margin-top: 5px; /* Added margin-top to lower the image */
+            margin-right: 10px; /* Add space between logo and button */
         }
-        #controls {
-            position: relative;
-            width: 100%;
-            height: 40px;
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 2px; /* Add padding to the header */
         }
         #toggleButton {
             background-color: #49667f;
             color: #d1c6b3;
             border: none;
-            width: 60px;
-            height: 30px;
-            font-size: 15px;
-            padding: 5px;
+            width: 50px; /* Reduced width */
+            height: 25px; /* Reduced height */
+            font-size: 13px; /* Smaller font size */
+            padding: 3px;
             border-radius: 3px;
-            position: absolute;
-            left: 0;
-            top: 5px;
+            margin-right: -2px; /* Move the button 2px to the right */
         }
         #toggleButton:hover {
             background-color: #384f62;
             color: #c3c9cd;
         }
         #volumeSlider {
-            position: absolute;
-            left: 80px;
-            top: 10px;
-            width: 140px;
+            width: 80px;
+            vertical-align: middle;
         }
         #volumeLabel {
             color: #d1c6b3;
-            position: absolute;
-            right: 50px;
-            top: 10px;
+            font-size: 12px;
+            vertical-align: middle;
+            margin-left: 5px;
+            width: 30px; /* Set a fixed width */
+            text-align: right; /* Align text to the right */
         }
         #refreshIcon {
             display: none; /* Hide the refresh icon */
@@ -91,27 +91,60 @@
             left: 0;
             top: 0;
         }
+        #infoContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        #listenersInfo, #durationInfo {
+            color: #d1c6b3;
+            font-size: 12px;
+            flex: 1;
+        }
+        #volumeContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 2;
+            width: 120px; /* Set a fixed width */
+        }
+        #logoContainer {
+            position: relative;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #logo {
+            height: 50px;
+            vertical-align: middle;
+        }
+        #controlContainer {
+            text-align: center;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>
+    <div id="logoContainer">
         <img id="logo" src="radio.png" alt="Radio Stream Player">
-    </h1>
-    <div id="controls">
         <button id="toggleButton">
             <span id="playText">Play</span>
             <span id="stopText" style="display: none;">Stop</span>
         </button>
-        <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50">
-        <label id="volumeLabel">100%</label>
-        <img id="refreshIcon" src="refresh.png" alt="Refresh" title="Refresh Stream">
     </div>
     <div id="trackInfo">Loading...</div>
     <div id="artistInfo"></div>
     <div id="progressBarContainer">
         <div id="progressBar"></div>
     </div>
-    <div id="durationInfo"></div>
+    <div id="infoContainer">
+        <span id="listenersInfo"></span>
+        <div id="volumeContainer">
+            <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50">
+            <label id="volumeLabel">50%</label>
+        </div>
+        <span id="durationInfo"></span>
+    </div>
     <script src="popup.js"></script>
 </body>
 </html>

@@ -29,9 +29,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const trackInfo = document.getElementById('trackInfo');
         const artistInfo = document.getElementById('artistInfo');
         const durationInfo = document.getElementById('durationInfo');
+        const listenersInfo = document.getElementById('listenersInfo');
         const [artist, title] = data.main.np.split(' - ');
         trackInfo.textContent = title;
         artistInfo.textContent = artist;
+        
+        // Update listeners count
+        listenersInfo.textContent = `${data.main.listeners} listeners`;
         
         // Calculate and display duration
         const startTime = data.main.start_time;
@@ -80,17 +84,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
       updateTrackInfo();
     }
   }, 1000);
-});
 
-document.getElementById('toggleButton').addEventListener('click', function() {
-  browser.runtime.sendMessage({ command: 'togglePlay' }, function(response) {
-    isPlaying = response.isPlaying;
-    updateButtonText();
+  // Add event listener for the toggle button
+  document.getElementById('toggleButton').addEventListener('click', function() {
+    browser.runtime.sendMessage({ command: 'togglePlay' }, function(response) {
+      isPlaying = response.isPlaying;
+      updateButtonText();
+    });
   });
 });
 
+// Update the volume slider event listener
 document.getElementById('volumeSlider').addEventListener('input', function() {
-  // Save the volume level when it's changed
   const volumeValue = parseInt(this.value);
   localStorage.setItem('volume', volumeValue);
   document.getElementById('volumeLabel').textContent = `${volumeValue}%`;
