@@ -70,6 +70,27 @@
             font-size: 12px; /* Smaller font size for artist info */
             margin-top: 5px;
         }
+        #durationInfo {
+            color: #d1c6b3;
+            text-align: center;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        #progressBarContainer {
+            width: 100%;
+            height: 5px;
+            background-color: #d1c6b3;
+            margin-top: 10px;
+            position: relative;
+        }
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background-color: #49667f;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
     </style>
 </head>
 <body>
@@ -85,8 +106,12 @@
         <label id="volumeLabel">100%</label>
         <img id="refreshIcon" src="refresh.png" alt="Refresh" title="Refresh Stream">
     </div>
-    <div id="trackInfo">Loading...</div> <!-- New div for track info -->
-    <div id="artistInfo"></div> <!-- New div for artist info -->
+    <div id="trackInfo">Loading...</div>
+    <div id="artistInfo"></div>
+    <div id="progressBarContainer">
+        <div id="progressBar"></div>
+    </div>
+    <div id="durationInfo"></div>
     <script src="popup.js"></script>
 </body>
 </html>
