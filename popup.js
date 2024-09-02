@@ -86,42 +86,68 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }, 1000);
 
   // Add event listener for the toggle button
-  document.getElementById('toggleButton').addEventListener('click', function() {
-    browser.runtime.sendMessage({ command: 'togglePlay' }, function(response) {
-      isPlaying = response.isPlaying;
-      updateButtonText();
-    });
+  document.getElementById('toggleButton').addEventListener('click', () => {
+    const currentTime = Date.now();
+    if (audio.paused) {
+      if (currentTime - lastPlayTime > 30 * 60 * 1000) {
+        audio.src = 'https://relay0.r-a-d.io/main.mp3';
+        audio.load();
+      }
+      audio.play();
+      isPlaying = true;
+    } else {
+      audio.pause();
+      isPlaying = false;
+    }
+    lastPlayTime = currentTime;
+    chrome.storage.local.set({ isPlaying: isPlaying });
+    updateButton();
+  });
+
+  // Update the volume slider event listener
+  document.getElementById('volumeSlider').addEventListener('input', (event) => {
+    audio.volume = event.target.value / 100;
+  });
+
+  // Remove the event listener for the refresh icon
+  document.getElementById('refreshIcon').addEventListener('click', function() {
+    // Do nothing
+  });
+
+  // Functions
+  function updateButtonText() {
+    const playText = document.getElementById('playText');
+    const stopText = document.getElementById('stopText');
+
+    if (isPlaying) {
+      playText.style.display = 'none';
+      stopText.style.display = 'inline';
+    } else {
+      playText.style.display = 'inline';
+      stopText.style.display = 'none';
+    }
+  }
+
+  function updateButton() {
+    const playText = document.getElementById('playText');
+    const stopText = document.getElementById('stopText');
+    if (isPlaying) {
+      playText.style.display = 'none';
+      stopText.style.display = 'inline';
+    } else {
+      playText.style.display = 'inline';
+      stopText.style.display = 'none';
+    }
+  }
+
+  // Clean up interval when popup is closed
+  window.addEventListener('unload', () => {
+    clearInterval(updateInterval);
   });
 });
 
-// Update the volume slider event listener
-document.getElementById('volumeSlider').addEventListener('input', function() {
-  const volumeValue = parseInt(this.value);
-  localStorage.setItem('volume', volumeValue);
-  document.getElementById('volumeLabel').textContent = `${volumeValue}%`;
-  browser.runtime.sendMessage({ command: 'changeVolume', volume: volumeValue / 100 });
-});
-
-// Remove the event listener for the refresh icon
-document.getElementById('refreshIcon').addEventListener('click', function() {
-  // Do nothing
-});
-
-// Functions
-function updateButtonText() {
-  const playText = document.getElementById('playText');
-  const stopText = document.getElementById('stopText');
-
-  if (isPlaying) {
-    playText.style.display = 'none';
-    stopText.style.display = 'inline';
-  } else {
-    playText.style.display = 'inline';
-    stopText.style.display = 'none';
-  }
-}
-
-// Clean up interval when popup is closed
-window.addEventListener('unload', () => {
-  clearInterval(updateInterval);
+// Initialize the playback state
+chrome.runtime.sendMessage({ command: 'getPlaybackState' }, (response) => {
+  isPlaying = response.isPlaying;
+  updateButton();
 });
