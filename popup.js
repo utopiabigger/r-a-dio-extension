@@ -1,153 +1,103 @@
-// Variables
-let isPlaying = false; // Variable to store the playback state
-let currentTime = 0;
-let totalDuration = 0;
-let updateInterval;
-
-// Event Listeners
-document.addEventListener('DOMContentLoaded', (event) => {
-  // When the popup is loaded, set the volume slider to the last saved value
-  const savedVolume = localStorage.getItem('volume');
-  if (savedVolume) {
-    const volumeValue = parseInt(savedVolume);
-    document.getElementById('volumeSlider').value = volumeValue;
-    document.getElementById('volumeLabel').textContent = `${volumeValue}%`;
-    browser.runtime.sendMessage({ command: 'changeVolume', volume: volumeValue / 100 });
+// AudioPlayer class definition
+class AudioPlayer {
+  constructor() {
+    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    this.audioElement = new Audio('https://relay0.r-a-d.io/main.mp3');
+    this.gainNode = this.audioContext.createGain();
+    this.audioElement.addEventListener('canplaythrough', () => {
+      const source = this.audioContext.createMediaElementSource(this.audioElement);
+      source.connect(this.gainNode);
+      this.gainNode.connect(this.audioContext.destination);
+    });
   }
 
-  // Check the initial playback state and update the button text
-  browser.runtime.sendMessage({ command: 'getPlaybackState' }, function(response) {
-    isPlaying = response.isPlaying;
-    updateButtonText();
-  });
-
-  // Fetch and display the current track information
-  function updateTrackInfo() {
-    fetch('https://r-a-d.io/api')
-      .then(response => response.json())
-      .then(data => {
-        const trackInfo = document.getElementById('trackInfo');
-        const artistInfo = document.getElementById('artistInfo');
-        const durationInfo = document.getElementById('durationInfo');
-        const listenersInfo = document.getElementById('listenersInfo');
-        const [artist, title] = data.main.np.split(' - ');
-        trackInfo.textContent = title;
-        artistInfo.textContent = artist;
-        
-        // Update listeners count
-        listenersInfo.textContent = `${data.main.listeners} listeners`;
-        
-        // Calculate and display duration
-        const startTime = data.main.start_time;
-        const endTime = data.main.end_time;
-        currentTime = Math.floor(Date.now() / 1000) - startTime;
-        totalDuration = endTime - startTime;
-        
-        // Reset progress bar when new track info is fetched
-        document.getElementById('progressBar').style.width = '0%';
-        
-        updateDurationDisplay();
-      })
-      .catch(error => {
-        console.error('Error fetching the API:', error);
-      });
-  }
-
-  function updateDurationDisplay() {
-    const durationInfo = document.getElementById('durationInfo');
-    const progressBar = document.getElementById('progressBar');
-    const currentMinutes = Math.floor(currentTime / 60);
-    const currentSeconds = currentTime % 60;
-    const totalMinutes = Math.floor(totalDuration / 60);
-    const totalSeconds = totalDuration % 60;
-    
-    durationInfo.textContent = `${formatTime(currentMinutes, currentSeconds)}/${formatTime(totalMinutes, totalSeconds)}`;
-    
-    // Update progress bar
-    const progress = (currentTime / totalDuration) * 100;
-    progressBar.style.width = `${progress}%`;
-  }
-
-  function formatTime(minutes, seconds) {
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  }
-
-  updateTrackInfo();
-  
-  // Update current time every second
-  updateInterval = setInterval(() => {
-    if (currentTime < totalDuration) {
-      currentTime++;
-      updateDurationDisplay();
-    } else {
-      // If the song has ended, fetch new track info
-      updateTrackInfo();
+  async play() {
+    try {
+      await this.audioElement.play();
+    } catch (error) {
+      console.error('Error playing audio:', error);
     }
-  }, 1000);
+  }
 
-  // Add event listener for the toggle button
-  document.getElementById('toggleButton').addEventListener('click', () => {
-    const currentTime = Date.now();
-    if (audio.paused) {
-      if (currentTime - lastPlayTime > 30 * 60 * 1000) {
-        audio.src = 'https://relay0.r-a-d.io/main.mp3';
-        audio.load();
+  pause() {
+    this.audioElement.pause();
+  }
+
+  setVolume(volume) {
+    this.gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+  }
+}
+
+const audioPlayer = new AudioPlayer();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const playButton = document.getElementById('toggleButton');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const trackInfo = document.getElementById('trackInfo');
+  const artistInfo = document.getElementById('artistInfo');
+  const durationInfo = document.getElementById('durationInfo');
+  const listenersInfo = document.getElementById('listenersInfo');
+
+  // Update UI elements with track information
+  function updateTrackInfo(trackData) {
+    if (trackData) {
+      trackInfo.textContent = trackData.np;
+      artistInfo.textContent = trackData.np.split(' - ')[0];
+      listenersInfo.textContent = `${trackData.listeners} listeners`;
+      // ... (update duration and progress bar)
+    } else {
+      trackInfo.textContent = 'Error fetching track info';
+    }
+  }
+
+  // Handle play/stop button click
+  playButton.addEventListener('click', () => {
+    chrome.runtime.sendMessage({ command: 'togglePlayback' }, (response) => {
+      if (response) {
+        playButton.textContent = response.isPlaying ? 'Stop' : 'Play';
+        if (response.isPlaying) {
+          audioPlayer.play();
+        } else {
+          audioPlayer.pause();
+        }
       }
-      audio.play();
-      isPlaying = true;
-    } else {
-      audio.pause();
-      isPlaying = false;
+    });
+  });
+
+  // Handle volume slider change
+  volumeSlider.addEventListener('input', (e) => {
+    const volume = e.target.value / 100;
+    audioPlayer.setVolume(volume);
+    chrome.runtime.sendMessage({ command: 'changeVolume', volume: volume }, (response) => {
+      if (response && !response.error) {
+        document.getElementById('volumeLabel').textContent = `${Math.round(response.volume * 100)}%`;
+      } else {
+        console.error('Failed to change volume:', response.error);
+        document.getElementById('volumeLabel').textContent = 'Error';
+      }
+    });
+  });
+
+  // Fetch initial track information
+  chrome.runtime.sendMessage({ command: 'fetchTrackInfo' }, (response) => {
+    if (response && response.trackInfo) {
+      updateTrackInfo(response.trackInfo);
     }
-    lastPlayTime = currentTime;
-    chrome.storage.local.set({ isPlaying: isPlaying });
-    updateButton();
   });
 
-  // Update the volume slider event listener
-  document.getElementById('volumeSlider').addEventListener('input', (event) => {
-    audio.volume = event.target.value / 100;
-  });
-
-  // Remove the event listener for the refresh icon
-  document.getElementById('refreshIcon').addEventListener('click', function() {
-    // Do nothing
-  });
-
-  // Functions
-  function updateButtonText() {
-    const playText = document.getElementById('playText');
-    const stopText = document.getElementById('stopText');
-
-    if (isPlaying) {
-      playText.style.display = 'none';
-      stopText.style.display = 'inline';
-    } else {
-      playText.style.display = 'inline';
-      stopText.style.display = 'none';
+  // Listen for track info updates from the background
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.command === 'trackInfoUpdated') {
+      updateTrackInfo(message.trackInfo);
+    } else if (message.command === 'updatePlaybackState') {
+      playButton.textContent = message.isPlaying ? 'Stop' : 'Play';
+      if (message.isPlaying) {
+        audioPlayer.play();
+      } else {
+        audioPlayer.pause();
+      }
+    } else if (message.command === 'updateVolume') {
+      audioPlayer.setVolume(message.volume);
     }
-  }
-
-  function updateButton() {
-    const playText = document.getElementById('playText');
-    const stopText = document.getElementById('stopText');
-    if (isPlaying) {
-      playText.style.display = 'none';
-      stopText.style.display = 'inline';
-    } else {
-      playText.style.display = 'inline';
-      stopText.style.display = 'none';
-    }
-  }
-
-  // Clean up interval when popup is closed
-  window.addEventListener('unload', () => {
-    clearInterval(updateInterval);
   });
-});
-
-// Initialize the playback state
-chrome.runtime.sendMessage({ command: 'getPlaybackState' }, (response) => {
-  isPlaying = response.isPlaying;
-  updateButton();
 });

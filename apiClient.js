@@ -1,6 +1,11 @@
 class ApiClient {
   static async fetchMainData() {
-    return this.fetchData('https://r-a-d.io/api');
+    try {
+      return await this.fetchData('https://r-a-d.io/api');
+    } catch (error) {
+      console.error('Error fetching main data:', error);
+      throw error;
+    }
   }
 
   static async fetchData(url, method = 'GET') {
@@ -11,3 +16,5 @@ class ApiClient {
     return await response.json();
   }
 }
+
+export default ApiClient;

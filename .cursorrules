@@ -1,0 +1,23 @@
+# Cursor Rules for Chrome Extension
+# This project plays music from a specific URL and makes API calls for additional functionality.
+
+# Instruction to play and control music
+play_music:
+  - action: play
+  - url: "https://relay0.r-a-d.io/main.mp3"
+
+stop_music:
+  - action: stop
+
+# API call rules
+api_calls:
+  - base_url: "https://r-a-d.io/api"
+  - methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+  - endpoints:
+      - "/music"
+      - "/playlists"
+      - "/search"
