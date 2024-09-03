@@ -3,10 +3,11 @@
   "name": "Radio Stream Player",
   "version": "1.5",
   "description": "Plays and stops a radio stream",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "background"],
   "host_permissions": ["https://*.r-a-d.io/*"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "action": {
     "default_popup": "popup.html",
