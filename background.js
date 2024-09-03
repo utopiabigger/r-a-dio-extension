@@ -85,8 +85,3 @@ function fetchMainData() {
       throw error;
     });
 }
-
-// Add this to ensure the background script stays active
-chrome.action.onClicked.addListener((tab) => {
-  console.log("Extension icon clicked");
-});

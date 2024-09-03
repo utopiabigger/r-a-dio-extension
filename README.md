@@ -4,18 +4,18 @@
 https://addons.mozilla.org/en-US/firefox/addon/r-a-dio-stream-player/
 
 ## What does this project do?
-A Firefox extension that provides a simple interface to play and stop a radio stream directly from your browser.
+A Web extension that provides a simple interface to play and stop a radio stream directly from your browser.
 
 ## What version is this?
-1.4
+1.5 - Firefox
+1.0 - Chrome
 
-## Testing
+## Testing for Chrome
 * Unzip the file on your desktop
-* Open Firefox
-* Enter about:debugging in the URL bar
-* Click "This Firefox"
-* Click "Load Temporary Add-on"
-* Open the extension's directory and select any file inside the extension.
+* Open Chrome
+* Enter chrome://extensions/ in the URL bar
+* Click "Developer Mode" in the top right
+* Click "Load Unpacked" and click the folder to open
 
 
 ## Changelog
