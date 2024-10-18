@@ -1,4 +1,4 @@
-# Project Name: r/A/dio Stream Player
+# r/a/dio Firefox Extension
 
 ## Out Now!
 https://addons.mozilla.org/en-US/firefox/addon/r-a-dio-stream-player/
